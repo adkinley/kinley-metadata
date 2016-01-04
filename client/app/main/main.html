@@ -1,28 +1,50 @@
-<div ng-include="'components/navbar/navbar.html'"></div>
+<title>File Metadata Microservice</title>
+  <h3>File Metadata Microservice</h3>
 
-<header class="hero-unit" id="banner">
-  <div class="container">
-    <h1>'Allo, 'Allo!</h1>
-    <p class="lead">Kick-start your next web app with Angular Fullstack</p>
-    <img src="assets/images/yeoman.png" alt="I'm Yeoman">
-  </div>
-</header>
-
-<div class="container">
+<div class="container" style="margin-top:20px">
+ <form  enctype="multipart/form-data"> 
   <div class="row">
-    <div class="col-lg-12">
-      <h1 class="page-header">Features:</h1>
-      <ul class="nav nav-tabs nav-stacked col-md-4 col-lg-4 col-sm-6" ng-repeat="thing in awesomeThings">
-        <li><a href="#" tooltip="{{thing.info}}">{{thing.name}}</a></li>
-      </ul>
-    </div>
-  </div>
+    <div class="col-md-3"><input type="file" name="upl" id="upl"></input></div>
+<div class ="col-md-3">    <input type="submit" value="Upload" ></input></div>
+</div>
+</form>
 </div>
 
+<script>
+$(document).ready(function () {
+  var files;
+  $('input[type=file]').on('change', function() {
+    files = event.target.files;
+  });
+
+  $('form').on('submit', function() {
+
+    var data = new FormData();
+   
+    $.each(files, function (key, value) {
+      data.append('upl',value);
+    });
+    
+    $.ajax({
+      type:'POST',
+      url: window.location.origin + '/api/fileanalyze',
+      data: data,
+      cache:false,
+      processData:false,
+      contentType:false,
+     success: function (result) {
+        alert("FILESIZE: " +result.size);
+      }
+
+    });
+
+  });
+
+})
+</script>
 <footer class="footer">
   <div class="container">
-      <p>Angular Fullstack v2.1.1 |
-        <a href="https://twitter.com/tyhenkel">@tyhenkel</a> |
-         <a href="https://github.com/DaftMonk/generator-angular-fullstack/issues?state=open">Issues</a></p>
+      <p>Another FreeCodeCamp Project by |
+        <a href="https://twitter.com/adkinley">@adkinley</a> 
   </div>
 </footer>
